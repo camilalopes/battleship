@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 import random as rd
 
+from . import board
+
 class Player(ABC):
     def __init__(self, nome):
         self.nome = nome
