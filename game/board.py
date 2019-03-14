@@ -3,14 +3,13 @@ import numpy as np
 class Board(object):
     __row = 10
     __col = 10
-	
-	ships = [ 
+
+	ships = [
 	{"ship" : "Aircraft", "size" : 5, "quantity": 1},
 	{"ship" : "Battleship", "size" : 4, "quantity": 1},
 	{"ship" : "Cruiser", "size" : 3, "quantity": 1},
 	{"ship" : "Destroyer", "size" : 2, "quantity": 2},
 	{"ship" : "Submarine", "size" : 1, "quantity": 2}]
-	
 
     def __init__(self):
         self.board = np.zeros((self.__row,self.__col), dtype=np.int)
@@ -31,16 +30,16 @@ class Board(object):
         else:
             print ('Coordenada inválida!')
             return False
-			
+
 	def check_end_game(self):
 		if len(ships) == 0
 			return True
-		
+
 		for row in range(__row)
 			for col in range(__col)
 				if check_coordinate(row, col):
 					return False
-		
+
 		return True
 
     def mark_coordinate(self, x, y):
