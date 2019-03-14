@@ -21,8 +21,32 @@ class Board(object):
     def get_col(self):
         return self.__col
 
+    def get_ships(self):
+        return self.ships
+
+    def put_ship(self, ship,  x, y, dir):
+        if dir == 'v':
+            direction = {"x": 0, "y": 1}
+        else:
+            direction = {"x": 1, "y": 0}
+
+        x2 = x
+        y2 = y
+        for i in range(self.ships[ship].size):
+            if not is_valid(x2, y2):
+                return False
+            x2 += direction.x
+            y2 += direction.y
+
+        if self.check_coordinate(x, y):
+            while len(self.ships[ship].position) < self.ships[ship].size:
+                self.ships[ship].position.append((x, y))
+                x += direction.x
+                y += direction.y
+
     def is_valid(self, x, y):
-        if (self.board[x][y] == 2) or (self.board[x][y] == 3): #jogada já foi efetuada antes
+        """ Confere se a coordenada está vazia """
+        if (self.board[x][y] != 0): 
             return False
         else:
              return True
@@ -31,7 +55,7 @@ class Board(object):
         """ Confere a validade da coordenada """
         if (x >= 0 and x < self.__row) and (y >= 0 and y < self.__col): #coordenada dentro do tabuleiro
             if not self.is_valid(x,y):
-                print ('Jogada repetida!')
+                print ('Posição Inválida!')
                 return False
             else:
                 return True
