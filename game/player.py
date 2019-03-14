@@ -1,7 +1,7 @@
-from abc import ABC, abstractmethod
 import random as rd
+from abc import ABC, abstractmethod
 
-from . import board
+from board import Board
 
 class Player(ABC):
     def __init__(self, nome):
@@ -28,6 +28,17 @@ class Computer(Player):
 
         board.mark_coordinate(x, y)
 
+    def put_ships(board):
+        for ship in board.ships:
+            x = rd.randint(0, board.get_row)
+            y = rd.randint(0, board.get_col)
+            orientation = 'v' if rd.randint(0, 2) == 0 else 'h'
+
+            for i in range(ship['size']):
+                if orientation == 'v':
+                    board.board[x][y+i] = 1
+                if orientation == 'h':
+                    board.board[x+i][y] = 1
 
 class Human(Player):
     def __init__(self, nome):
@@ -41,3 +52,16 @@ class Human(Player):
             valida = check_coordinate(x, y)
 
         board.mark_coordinate(x, y)
+
+    def put_ships(board):
+        for ship in board.ships:
+            print('Posicione o seu ', ship['ship'])
+            x = input('Coordenada inicial X: ')
+            y = input('Coordenada inicial Y: ')
+            orientation = input('Orientação (v / h): ')
+
+            for i in range(ship['size']):
+                if orientation == 'v':
+                    board.board[x][y+i] = 1
+                if orientation == 'h':
+                    board.board[x+i][y] = 1

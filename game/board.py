@@ -13,8 +13,6 @@ class Board(object):
     {"ship" : "Submarine", "size" : 1, "position": []},
     {"ship" : "Submarine", "size" : 2, "position": []}]
 
-	
-
     def __init__(self):
         self.board = np.zeros((self.__row,self.__col), dtype=np.int)
 
