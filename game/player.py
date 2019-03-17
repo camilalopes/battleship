@@ -4,64 +4,72 @@ from abc import ABC, abstractmethod
 from board import Board
 
 class Player(ABC):
-    def __init__(self, nome):
-        self.nome = nome
+    name = ""
+    board = None
+    
+    def __init__(self, name):
+        self.name = name
+        self.board = Board()
 
     #@abstractmethod
-    def put_ships(board):
+    def put_ships(self, board):
         pass
 
     #@abstractmethod
-    def try_hit(board):
+    def try_hit(self, board):
         pass
+
+    def get_name(self):
+        return self.name
 
 class Computer(Player):
-    def __init__(self, nome):
-        super().__init__(nome)
+    def __init__(self, name):
+        super().__init__(name)
 
-    def try_hit(board):
-        valida = false
-        while(valida == false):
-            x = rd.randint(0, board.get_row)
-            y = rd.randint(0, board.get_col)
-            valida = board.check_coordinate(x, y)
+    def try_hit(self, board):
+        valid = False
+        while(valid == False):
+            x = rd.randint(0, board.get_rows()-1)
+            y = rd.randint(0, board.get_cols()-1)
+            valid = board.check_coordinate(x, y)
+            if valid:
+                valid = board.is_valid_to_shoot(x, y)
 
-        board.mark_coordinate(x, y)
-
-    def put_ships(board):
-        for ship in board.ships:
-            x = rd.randint(0, board.get_row)
-            y = rd.randint(0, board.get_col)
-            orientation = 'v' if rd.randint(0, 2) == 0 else 'h'
-
-            for i in range(ship['size']):
-                if orientation == 'v':
-                    board.board[x][y+i] = 1
-                if orientation == 'h':
-                    board.board[x+i][y] = 1
+    def put_ships(self, board):
+        for ship in board.get_ships():
+            valid = False
+            while(valid == False):       
+                x = rd.randint(0, board.get_rows()-1)
+                y = rd.randint(0, board.get_cols()-1)
+                direction = 'v' if rd.randint(0, 2) == 0 else 'h'
+                valid = board.check_coordinate(x, y)
+                if valid:
+                    valid = board.put_ship(ship, x, y, direction)
 
 class Human(Player):
-    def __init__(self, nome):
-        super().__init__(nome)
+    def __init__(self, name):
+        super().__init__(name)
 
-    def try_hit(board):
-        valida = false
-        while(valida == false):
-            x = input('Coordenada X: ')
-            y = input('Coordenada Y: ')
-            valida = check_coordinate(x, y)
+    def try_hit(self, board):
+        valid = False
+        while(valid == False):
+            x = int(input('Coordenada X: '))
+            y = int(input('Coordenada Y: '))
+            valid = board.check_coordinate(x, y)
+            if valid:
+                valid = board.is_valid_to_shoot(x, y)
 
-        board.mark_coordinate(x, y)
 
-    def put_ships(board):
-        for ship in board.ships:
-            print('Posicione o seu ', ship['ship'])
-            x = input('Coordenada inicial X: ')
-            y = input('Coordenada inicial Y: ')
-            orientation = input('Orientação (v / h): ')
+    def put_ships(self, board):
+        for ship in board.get_ships():
+            valid = False
+            while(valid == False):
+                print('Posicione o seu ', ship['ship'])
+                x = int(input('Coordenada inicial X: '))
+                y = int(input('Coordenada inicial Y: '))
+                direction = input('Orientação (v / h): ')
 
-            for i in range(ship['size']):
-                if orientation == 'v':
-                    board.board[x][y+i] = 1
-                if orientation == 'h':
-                    board.board[x+i][y] = 1
+                valid = board.check_coordinate(x, y)
+                if valid:
+                    valid = board.put_ship(ship, x, y, direction)
+            board.display_board(self.get_name())
