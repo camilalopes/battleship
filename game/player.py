@@ -5,17 +5,17 @@ from board import Board
 
 class Player(ABC):
     name = ""
-    board = None
-    
+    #board = None
+
     def __init__(self, name):
         self.name = name
-        self.board = Board()
+        #self.board = Board()
 
-    #@abstractmethod
+    @abstractmethod
     def put_ships(self, board):
         pass
 
-    #@abstractmethod
+    @abstractmethod
     def try_hit(self, board):
         pass
 
@@ -38,9 +38,9 @@ class Computer(Player):
     def put_ships(self, board):
         for ship in board.get_ships():
             valid = False
-            while(valid == False):       
-                x = rd.randint(0, board.get_rows()-1)
-                y = rd.randint(0, board.get_cols()-1)
+            while(valid == False):
+                x = rd.randint(0, board.get_rows())
+                y = rd.randint(0, board.get_cols())
                 direction = 'v' if rd.randint(0, 2) == 0 else 'h'
                 valid = board.check_coordinate(x, y)
                 if valid:

@@ -3,17 +3,16 @@ import numpy as np
 class Board(object):
     __row = 10
     __col = 10
-	
-    ships = [ 
-    {"ship" : "Aircraft", "size" : 5, "position": []},
-    {"ship" : "Battleship", "size" : 4, "position": []},
-    {"ship" : "Cruiser", "size" : 3, "position": []},
-    {"ship" : "Destroyer", "size" : 2, "position": []},
-    {"ship" : "Destroyer", "size" : 2, "position": []},
-    {"ship" : "Submarine", "size" : 1, "position": []},
-    {"ship" : "Submarine", "size" : 2, "position": []}]
 
     def __init__(self):
+        self.ships = [
+        {"ship" : "Aircraft", "size" : 5, "position": []},
+        {"ship" : "Battleship", "size" : 4, "position": []},
+        {"ship" : "Cruiser", "size" : 3, "position": []},
+        {"ship" : "Destroyer", "size" : 2, "position": []},
+        {"ship" : "Destroyer", "size" : 2, "position": []},
+        {"ship" : "Submarine", "size" : 1, "position": []},
+        {"ship" : "Submarine", "size" : 1, "position": []}]
         self.board = np.zeros((self.__row,self.__col), dtype=np.int)
 
     def get_rows(self):
@@ -31,7 +30,7 @@ class Board(object):
         return 0
 
     def put_ship(self, ship, x, y, dir):
-        if dir == 'v':
+        if dir == 'h':
             direction = {"x": 0, "y": 1}
         else:
             direction = {"x": 1, "y": 0}
@@ -59,7 +58,7 @@ class Board(object):
 
     def is_valid_to_put(self, x, y):
         """ Confere se a coordenada está vazia """
-        if (self.board[x][y] != 0): 
+        if (self.board[x][y] != 0):
             print ('Posição Inválida!')
             return False
         else:
@@ -67,7 +66,7 @@ class Board(object):
 
     def is_valid_to_shoot(self, x, y):
         """ Confere se a coordenada pode receber tiro """
-        if (self.board[x][y] == 0 or self.board[x][y] == 1): 
+        if (self.board[x][y] == 0 or self.board[x][y] == 1):
             return True
         else:
             print ('Posição Inválida!')
@@ -80,10 +79,10 @@ class Board(object):
         else:
             print ('Coordenada inválida!')
             return False
-			
+
     def check_game_over(self):
         return len(self.ships) == 0
-            
+
     def mark_coordinate(self, x, y):
         """ Marca a coordenada no tabuleiro """
         if self.board[x][y] == 0:
@@ -125,5 +124,3 @@ class Board(object):
                     print(0, " ", end='')
 
             print("")
-
-    
