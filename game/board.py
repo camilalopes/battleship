@@ -43,11 +43,11 @@ class Board(object):
         for _ in range(self.ships[i]["size"]):
             if self.check_coordinate(x2, y2):
                 if not self.is_valid_to_put(x2, y2):
-                    return False
+                    return False, self
                 x2 += direction["x"]
                 y2 += direction["y"]
             else:
-                return False
+                return False, self
 
         if self.check_coordinate(x, y):
             while len(self.ships[i]["position"]) < self.ships[i]["size"]:
@@ -55,7 +55,7 @@ class Board(object):
                 self.board[x][y] = 1
                 x += direction["x"]
                 y += direction["y"]
-            return True
+            return True, self
 
     def is_valid_to_put(self, x, y):
         """ Confere se a coordenada está vazia """
