@@ -29,11 +29,11 @@ class Computer(Player):
     def try_hit(self, board):
         valid = False
         while(valid == False):
-            x = rd.randint(0, board.get_rows()-1)
-            y = rd.randint(0, board.get_cols()-1)
+            x = rd.randint(0, board.get_rows())
+            y = rd.randint(0, board.get_cols())
             valid = board.check_coordinate(x, y)
             if valid:
-                valid = board.is_valid_to_shoot(x, y)
+                valid = board.try_hit(x, y)
 
     def put_ships(self, board):
         for ship in board.get_ships():
@@ -57,7 +57,7 @@ class Human(Player):
             y = int(input('Coordenada Y: '))
             valid = board.check_coordinate(x, y)
             if valid:
-                valid = board.is_valid_to_shoot(x, y)
+                valid = board.try_hit(x, y)
 
 
     def put_ships(self, board):
@@ -72,4 +72,5 @@ class Human(Player):
                 valid = board.check_coordinate(x, y)
                 if valid:
                     valid = board.put_ship(ship, x, y, direction)
+
             board.display_board(self.get_name())

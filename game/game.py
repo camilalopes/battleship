@@ -1,5 +1,6 @@
 from player import Human, Computer
 from board import Board
+import time
 
 class Game(object):
 	players = []
@@ -7,8 +8,8 @@ class Game(object):
 	player_turn = 0
 
 	def __init__(self):
-		self.players.append(Computer("PC"))
 		self.players.append(Human("Jogador 1"))
+		self.players.append(Computer("PC"))
 
 		self.boards.append(Board())
 		self.boards.append(Board())
@@ -29,7 +30,17 @@ class Game(object):
 			self.players[self.player_turn].put_ships(self.boards[self.player_turn])
 			print(self.player_turn, "\n", self.boards[self.player_turn].board)
 			self.change_player()
-			#print("A\n", self.boards[self.player_turn].board)
+
+		while(1):
+			enemy = abs(self.player_turn-1)
+			if(self.have_winner()):
+				break
+
+			self.boards[enemy].display_enemy_board(self.players[enemy].get_name())
+			print(self.player_turn, "\n", self.boards[self.player_turn].board)
+			self.players[self.player_turn].try_hit(self.boards[enemy])
+			time.sleep(5)
+			self.change_player()
 
 		'''
 		while self.have_winner == False:

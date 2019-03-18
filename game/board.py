@@ -1,4 +1,5 @@
 import numpy as np
+import os
 
 class Board(object):
     __row = 10
@@ -56,6 +57,20 @@ class Board(object):
                 y += direction["y"]
             return True
 
+    def try_hit(self, x, y):
+        if self.is_valid_to_shoot(x, y):
+            if self.board[x][y] == 0:
+                print ('Tiro na água!')
+                self.board[x][y] = 2
+            else:
+                if self.board[x][y] == 1:
+                    print ('Tiro acertou embarcação!')
+                    self.board[x][y] = 3
+            return True
+        else:
+            return False
+
+
     def is_valid_to_put(self, x, y):
         """ Confere se a coordenada está vazia """
         if (self.board[x][y] != 0):
@@ -83,17 +98,8 @@ class Board(object):
     def check_game_over(self):
         return len(self.ships) == 0
 
-    def mark_coordinate(self, x, y):
-        """ Marca a coordenada no tabuleiro """
-        if self.board[x][y] == 0:
-            print ('Tiro na água!')
-            self.board[x][y] == 2
-        else:
-            if self.board[x][y] == 1:
-                print ('Tiro acertou embarcação!')
-                self.board[x][y] == 3
-
     def display_board(self, name):
+        os.system('cls' if os.name == 'nt' else 'clear')
         print("\n ======================== Tabuleiro do " + name + " =============================== \n" ,
             "0 = Nao jogado | 2 = Tiro na agua | 3 = Navio atingido",end="\n\n\t")
         for i in range(10):
