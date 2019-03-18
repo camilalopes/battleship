@@ -1,4 +1,5 @@
 import random as rd
+import os
 from abc import ABC, abstractmethod
 
 from board import Board
@@ -31,9 +32,10 @@ class Computer(Player):
         while(valid == False):
             x = rd.randint(0, board.get_rows())
             y = rd.randint(0, board.get_cols())
-            valid = board.check_coordinate(x, y)
+
+            valid = board.check_coordinate(x, y, False)
             if valid:
-                valid = board.try_hit(x, y)
+                valid = board.try_hit(x, y, False)
 
     def put_ships(self, board):
         for ship in board.get_ships():
@@ -42,9 +44,10 @@ class Computer(Player):
                 x = rd.randint(0, board.get_rows())
                 y = rd.randint(0, board.get_cols())
                 direction = 'v' if rd.randint(0, 2) == 0 else 'h'
-                valid = board.check_coordinate(x, y)
+
+                valid = board.check_coordinate(x, y, False)
                 if valid:
-                    valid = board.put_ship(ship, x, y, direction)
+                    valid = board.put_ship(ship, x, y, direction, False)
 
 class Human(Player):
     def __init__(self, name):
@@ -55,9 +58,10 @@ class Human(Player):
         while(valid == False):
             x = int(input('Coordenada X: '))
             y = int(input('Coordenada Y: '))
-            valid = board.check_coordinate(x, y)
+
+            valid = board.check_coordinate(x, y, True)
             if valid:
-                valid = board.try_hit(x, y)
+                valid = board.try_hit(x, y, True)
 
     def put_ships(self, board):
         for ship in board.get_ships():
@@ -68,8 +72,17 @@ class Human(Player):
                 y = int(input('Coordenada inicial Y: '))
                 direction = input('Orientação (v / h): ')
 
-                valid = board.check_coordinate(x, y)
+                clear_screen()
+                valid = board.check_coordinate(x, y, True)
                 if valid:
-                    valid = board.put_ship(ship, x, y, direction)
+                    valid = board.put_ship(ship, x, y, direction, True)
 
-            board.display_board(self.get_name())
+        board.display_board(self.get_name())
+
+
+#Helper
+def clear_screen():
+    if os.name != "posix":
+        os.system("cls")
+    else:
+        os.system("clear")
