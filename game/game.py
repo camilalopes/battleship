@@ -19,26 +19,31 @@ class Game(object):
 	def change_player(self):
 		self.player_turn = abs(self.player_turn - 1)
 
-	def have_winner(self):
-		if self.boards[0].check_game_over():
-			print(self.players[1].get_name() + " venceu a partida!")
+	def has_won(self, player, enemy):
+		if(self.boards[enemy].check_game_over()):
+			print(self.players[player].get_name() + " venceu a partida!")
+			return True
 		else:
-			print(self.players[0].get_name() + " venceu a partida!")
+			return False
 
 	def main(self):
+		''' Players put their ships '''
 		for _ in self.players:
 			self.players[self.player_turn].put_ships(self.boards[self.player_turn])
 			print(self.player_turn, "\n", self.boards[self.player_turn].board)
 			self.change_player()
 
+		''' The game begins and not finish until a player win '''
 		while(1):
 			enemy = abs(self.player_turn-1)
-			if(self.have_winner()):
-				break
 
 			self.boards[enemy].display_enemy_board(self.players[enemy].get_name())
-			print(self.player_turn, "\n", self.boards[self.player_turn].board)
+			#print(self.player_turn, "\n", self.boards[self.player_turn].board)
 			self.players[self.player_turn].try_hit(self.boards[enemy])
+
+			if (self.has_won(self.player_turn, enemy)):
+				break
+
 			time.sleep(5)
 			self.change_player()
 

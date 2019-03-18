@@ -59,7 +59,6 @@ class Human(Player):
             if valid:
                 valid = board.try_hit(x, y)
 
-
     def put_ships(self, board):
         for ship in board.get_ships():
             valid = False
