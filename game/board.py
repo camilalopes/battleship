@@ -70,14 +70,15 @@ class Board(object):
             if self.board[x][y] == 0:
                 print ('Tiro na água!')
                 self.board[x][y] = 2
+                return 2
             else:
-                if self.board[x][y] == 1:
-                    self.hit_ship_at_position(x, y)
+                if self.board[x][y] == 1:                 
                     print ('Tiro acertou embarcação!')
+                    self.hit_ship_at_position(x, y)
                     self.board[x][y] = 3
-            return True
+                    return 3
         else:
-            return False
+            return -1
 
     def hit_ship_at_position(self, x, y):
         for ship in self.ships:
@@ -85,6 +86,7 @@ class Board(object):
                 ship["position"].remove((x, y))
                 ship["size"] = ship["size"]-1
                 if ship["size"] <= 0:
+                    print (ship["ship"] + " afundou!")
                     self.ships.remove(ship)
 
     def is_valid_to_put(self, x, y, msg):

@@ -53,7 +53,7 @@ class Game(object):
 
 			if(self.has_won(self.player_turn, enemy)):
 				break
-			time.sleep(3)
+			time.sleep(1)
 			self.change_player()
 
 if __name__=="__main__":
