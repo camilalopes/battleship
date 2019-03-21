@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import numpy as np
 import os
 
@@ -22,6 +23,7 @@ class Board(object):
         {"ship" : "Destroyer", "size" : 2, "position": []},
         {"ship" : "Submarine", "size" : 1, "position": []},
         {"ship" : "Submarine", "size" : 1, "position": []}]
+	self.positions = []
         self.board = np.zeros((self.__row,self.__col), dtype=np.int)
 
     def get_rows(self):
@@ -83,6 +85,7 @@ class Board(object):
     def hit_ship_at_position(self, x, y):
         for ship in self.ships:
             if (x, y) in ship["position"]:
+		positions.append({"x" : x, "y" : y})
                 ship["position"].remove((x, y))
                 ship["size"] = ship["size"]-1
                 if ship["size"] <= 0:
@@ -115,6 +118,15 @@ class Board(object):
             if msg:
                 print ('Coordenada inválida!')
             return False
+
+    def calculate_distance(self, x, y):
+	distances = []
+	for i in range(len(self.positions)):
+	    aux = (x - position[i]["x"])**2 + (y - position[i]["y"])**2
+	    dist = math.sqrt(aux)
+	    distances.append(dist)
+	distances.sort()
+	return distances[0]
 
     def check_game_over(self):
         return len(self.ships) == 0
