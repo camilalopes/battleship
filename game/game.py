@@ -1,7 +1,7 @@
 import time
 import os
 
-from player import Human, PC1
+from player import Human, PC1, PC2
 from board import Board
 
 class Game(object):
@@ -10,8 +10,8 @@ class Game(object):
 	player_turn = 0
 
 	def __init__(self):
-		self.players.append(PC1("PC"))
-		self.players.append(Human("Jogador 1"))
+		self.players.append(PC1("PC1"))
+		self.players.append(PC2("PC2"))
 
 		self.boards.append(Board())
 		self.boards.append(Board())
@@ -38,7 +38,7 @@ class Game(object):
 		''' Players put their ships '''
 		for _ in self.players:
 			self.players[self.player_turn].put_ships(self.boards[self.player_turn])
-			time.sleep(3)
+			time.sleep(1)
 			self.cls()
 			self.change_player()
 

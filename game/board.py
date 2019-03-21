@@ -1,5 +1,6 @@
 import numpy as np
 import os
+import copy
 
 class Board(object):
     __row = 10
@@ -176,3 +177,11 @@ class Board(object):
 
             print("")
         print("\n")
+
+    def get_enemy_board(self):
+        enemy_board = copy.deepcopy(self.board)
+        for row in range(self.get_rows()):
+            for col in range(self.get_cols()):
+                if self.board[row][col] == 1:
+                    enemy_board[row][col] = 0
+        return enemy_board

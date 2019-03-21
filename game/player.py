@@ -130,6 +130,118 @@ class PC1(Computer):
     def put_ships(self, board):
         super().put_ships(board)
 
+class PC2(Computer):
+    directions = [
+        {"x": 0, "y": 1},
+        {"x": 0, "y": -1},
+        {"x": 1, "y": 0},
+        {"x": -1, "y": 0}]
+
+    def __init__(self, name):
+        super().__init__(name)
+        self.last_try = {"x": 0, "y": 0}
+        self.first_hit = {"x": 0, "y": 0}
+        self.last_direction = {"x": 0, "y": 1}
+        self.last_feedback = 0
+        self.x2 = 0
+        self.y2 = 0
+
+    def try_hit(self, board):
+        valid = False
+        board2 = board.get_enemy_board()
+
+        while(valid == False):
+            x = 0
+            y = 0
+        
+            x = self.last_try["x"]
+            y = self.last_try["y"]
+
+            if board2[x][y] == 3:
+                inc = 1
+                while board.check_coordinate(x, y+inc, False) and board2[x][y+inc] != 2:
+                    inc = inc + 1
+                    valid = self.try_(x, y+inc, board)
+                    if valid: break
+                    
+                inc = 1
+                while board.check_coordinate(x+inc, y, False) and board2[x+inc][y] != 2:
+                    inc = inc + 1
+                    valid = self.try_(x+inc, y, board)
+                    if valid: break
+                    
+                inc = 1
+                while board.check_coordinate(x-inc, y, False) and board2[x-inc][y] != 2:
+                    inc = inc + 1
+                    valid = self.try_(x-inc, y, board)
+                    if valid: break
+                    
+                inc = 1
+                while board.check_coordinate(x, y-inc, False) and board2[x][y-inc] != 2:
+                    inc = inc + 1
+                    valid = self.try_(x, y-inc, board)
+                    if valid: break
+                    
+                  
+            if board2[x][y] == 2:
+                inc = 1
+                while board.check_coordinate(x, y+inc, False) and board2[x][y+inc] == 3:
+                    inc = inc + 1
+                    valid = self.try_(x, y+inc, board)
+                    if valid: break
+                    
+                inc = 1
+                while board.check_coordinate(x+inc, y, False) and board2[x+inc][y] == 3:
+                    inc = inc + 1
+                    valid = self.try_(x+inc, y, board)
+                    if valid: break
+                    
+                inc = 1
+                while board.check_coordinate(x-inc, y, False) and board2[x-inc][y] == 3:
+                    inc = inc + 1
+                    valid = self.try_(x-inc, y, board) 
+                    if valid: break           
+
+                inc = 1
+                while board.check_coordinate(x, y-inc, False) and board2[x][y-inc] == 3:
+                    inc = inc + 1
+                    valid = self.try_(x, y-inc, board)
+                    if valid: break
+                    
+            for x in range(board.get_rows()):
+                for y in range(board.get_cols()):
+                    if board2[x][y] == 3:
+                        if board2[x][y+1] == 0:
+                            self.try_(x, y+1, board)
+                        if board2[x][y-1] == 0:
+                            self.try_(x, y-1, board)
+                        if board2[x+1][y] == 0:
+                            self.try_(x+1, y, board)
+                        if board2[x-1][y] == 0:
+                            self.try_(x-1, y, board)
+
+            x = rd.randint(0, board.get_rows())
+            y = rd.randint(0, board.get_cols())
+
+            valid = board.check_coordinate(self.x2, self.y2, False)
+            if valid:
+                self.last_feedback = board.try_hit(self.x2, self.y2, False)
+                valid = self.last_feedback != -1
+                if valid:
+                    self.last_try["x"] = self.x2
+                    self.last_try["y"] = self.y2
+
+
+    def put_ships(self, board):
+        super().put_ships(board)
+
+    def try_(self, x, y, board):
+        if board.is_valid_to_shoot(x, y, False):
+            self.x = x
+            self.y = y
+        return board.is_valid_to_shoot(x, y, False)
+
+
 #Helper
 def clear_screen():
     if os.name != "posix":
