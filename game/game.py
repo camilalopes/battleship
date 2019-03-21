@@ -1,7 +1,7 @@
 import time
 import os
 
-from player import Human, Computer
+from player import Human, PC1
 from board import Board
 
 class Game(object):
@@ -10,7 +10,7 @@ class Game(object):
 	player_turn = 0
 
 	def __init__(self):
-		self.players.append(Computer("PC"))
+		self.players.append(PC1("PC"))
 		self.players.append(Human("Jogador 1"))
 
 		self.boards.append(Board())
@@ -43,7 +43,6 @@ class Game(object):
 			self.change_player()
 
 		''' The game begins and not finish until a player wins the game '''
-		
 		while True:
 			enemy = abs(self.player_turn-1)
 

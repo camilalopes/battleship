@@ -6,7 +6,7 @@ class Board(object):
     __col = 10
 
     colors = {
-    "reset":"\033[00m", 
+    "reset":"\033[00m",
     "red":"\033[91m", #Sinked Ship
     "green":"\033[92m", #Ship
     "blue":"\033[94m", #Water Shot
@@ -72,7 +72,7 @@ class Board(object):
                 self.board[x][y] = 2
                 return 2
             else:
-                if self.board[x][y] == 1:                 
+                if self.board[x][y] == 1:
                     print ('Tiro acertou embarcação!')
                     self.hit_ship_at_position(x, y)
                     self.board[x][y] = 3
