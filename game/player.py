@@ -31,12 +31,14 @@ class Human(Player):
     def try_hit(self, board):
         valid = False
         while(valid == False):
-            x = int(input('Coordenada X: '))
-            y = int(input('Coordenada Y: '))
-
-            valid = board.check_coordinate(x, y, True)
-            if valid:
-                valid = board.try_hit(x, y, True)
+            try:
+                x = int(input('Coordenada X: '))
+                y = int(input('Coordenada Y: '))
+                valid = board.check_coordinate(x, y, True)
+                if valid:
+                    valid = board.try_hit(x, y, True)
+            except ValueError:
+                print('Coordenada inválida')
 
     def put_ships(self, board):
         for ship in board.get_ships():
