@@ -50,7 +50,7 @@ class Human(Player):
                 if valid:
                     valid = board.put_ship(ship, x, y, direction, True)
 
-        board.display_board(self.get_name())
+        board.display_board()
 
 
 class Computer(Player):

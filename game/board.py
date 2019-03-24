@@ -67,8 +67,8 @@ class Board(object):
             return True
 
     def try_hit(self, x, y, msg):
-        print('Tentativa na posição: ('+str(x)+', '+str(y)+')')
         if self.is_valid_to_shoot(x, y, msg):
+            print('Tentativa na posição: ('+str(x)+', '+str(y)+')')
             if self.board[x][y] == 0:
                 print ('Tiro na água!')
                 self.board[x][y] = 2
@@ -123,10 +123,8 @@ class Board(object):
     def check_game_over(self):
         return len(self.ships) == 0
 
-    def display_board(self, name):
-        os.system('cls' if os.name == 'nt' else 'clear')
-        print("\n ======================== Tabuleiro do " + name + " =============================== \n" ,
-            "0 = Nao jogado | 2 = Tiro na agua | 3 = Navio atingido",end="\n\n\t")
+    def display_board(self):
+        print(end="\t")
         for i in range(10):
             print(i," ", end='')
         print("\n")
@@ -136,27 +134,25 @@ class Board(object):
                 if col==0:
                     print(row, end='\t')
                 if self.board[row][col] == 0:
-                    print(self.board[row][col], " ", end='')
+                    print(".", " ", end='')
                 elif self.board[row][col] == 1:
                     print(self.colors["green"], end="")
-                    print(self.board[row][col], " ", end='')
+                    print("+", " ", end='')
                     print(self.colors["reset"], end="")
                 elif self.board[row][col] == 2:
                     print(self.colors["blue"], end="")
-                    print(self.board[row][col], " ", end='')
+                    print("o", " ", end='')
                     print(self.colors["reset"], end="")
                 elif self.board[row][col] == 3:
                     print(self.colors["red"], end="")
-                    print(self.board[row][col], " ", end='')
+                    print("X", " ", end='')
                     print(self.colors["reset"], end="")
 
             print("")
         print("\n")
 
-    def display_enemy_board(self, name):
-        print("\n ======================== Vez do " + name + " =============================== \n" ,
-            "0 = Nao jogado | 2 = Tiro na agua | 3 = Navio atingido", end="\n\n\t")
-
+    def display_enemy_board(self):
+        print(end="\t")
         for i in range(10):
             print(i," ", end='')
         print("\n")
@@ -166,17 +162,17 @@ class Board(object):
                 if col==0:
                     print(row, end='\t')
                 if self.board[row][col] == 0:
-                    print(self.board[row][col], " ", end='')
+                    print(".", " ", end='')
                 elif self.board[row][col] == 2:
                     print(self.colors["blue"], end="")
-                    print(self.board[row][col], " ", end='')
+                    print("o", " ", end='')
                     print(self.colors["reset"], end="")
                 elif self.board[row][col] == 3:
                     print(self.colors["red"], end="")
-                    print(self.board[row][col], " ", end='')
+                    print("X", " ", end='')
                     print(self.colors["reset"], end="")
                 else:
-                    print(0, " ", end='')
+                    print(".", " ", end='')
 
             print("")
         print("\n")
