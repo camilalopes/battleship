@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import random as rd
 import os
-import math
+
 from abc import ABC, abstractmethod
 
 from board import Board
@@ -45,7 +45,7 @@ class Human(Player):
                 print('Posicione o seu ', ship['ship'])
                 x = int(input('Coordenada inicial X: '))
                 y = int(input('Coordenada inicial Y: '))
-		direction = input('Orientação (v / h): ')
+                direction = input('Orientação (v / h): ')
 
                 clear_screen()
                 valid = board.check_coordinate(x, y, True)
@@ -141,18 +141,18 @@ class PC2(Computer):
     def try_hit(self, board):
         valid = False
         while(valid == False):
-	    fit = 0
-	    for i in range(7):
-	        x = rd.randint(0, board.get_rows())
-                y = rd.randint(0, board.get_cols())
-	        position_fit = board.calculate_distance(x, y)
-	        if position_fit > fit:
-		    best_position = {"x" : x, "y" : y}
-		    fit = position_fit
-	    
+            fit = 100000
+            best_position = {}
+            for _ in range(30):
+                x = rd.randint(0, board.get_rows()-1)
+                y = rd.randint(0, board.get_cols()-1)
+                position_fit = (board.calculate_distance(x, y))
+                if position_fit < fit:
+                    best_position = {"x": x, "y": y}
+                    fit = position_fit
             valid = board.check_coordinate(best_position["x"], best_position["y"], False)
             if valid:
-                valid = board.try_hit(best_position["x"], best_position["y"], False)
+                valid = (board.try_hit(best_position["x"], best_position["y"], False))!=-1
 
     def put_ships(self, board):
         super().put_ships(board)

@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 import time
 import os
+import msvcrt as m
 
-from player import Human, PC1
+from player import Human, PC1, PC2
 from board import Board
 
 class Game(object):
@@ -11,7 +12,7 @@ class Game(object):
 	player_turn = 0
 
 	def __init__(self):
-		self.players.append(PC1("PC"))
+		self.players.append(PC2("PC"))
 		self.players.append(Human("Jogador 1"))
 
 		self.boards.append(Board())
@@ -53,7 +54,8 @@ class Game(object):
 
 			if(self.has_won(self.player_turn, enemy)):
 				break
-			time.sleep(1)
+			m.getch()
+			#time.sleep(10)
 			self.change_player()
 
 if __name__=="__main__":

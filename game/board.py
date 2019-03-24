@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 import os
+import math
 
 class Board(object):
     __row = 10
@@ -23,7 +24,7 @@ class Board(object):
         {"ship" : "Destroyer", "size" : 2, "position": []},
         {"ship" : "Submarine", "size" : 1, "position": []},
         {"ship" : "Submarine", "size" : 1, "position": []}]
-	self.positions = []
+        self.hit_positions = []  # hit positions of ships that not yet been sunk
         self.board = np.zeros((self.__row,self.__col), dtype=np.int)
 
     def get_rows(self):
@@ -82,14 +83,29 @@ class Board(object):
         else:
             return -1
 
+    def remove_positions_sinked_ship(self, ship):
+        print("positions: " , self.hit_positions)
+        print("removing .. ")
+        positions = []
+        for i in range(len(self.hit_positions)):
+            if (self.hit_positions[i]["x"], self.hit_positions[i]["y"]) in ship['position']:
+                print("entrei pra deletar!")
+                positions.append(i)
+        
+        print(positions)
+        for i in sorted(positions, reverse=True):
+            del(self.hit_positions[positions[i]])
+        print("positions: ", self.hit_positions)
+
     def hit_ship_at_position(self, x, y):
         for ship in self.ships:
             if (x, y) in ship["position"]:
-		positions.append({"x" : x, "y" : y})
-                ship["position"].remove((x, y))
+                self.hit_positions.append({"x" : x, "y" : y})
+                #ship["position"].remove((x, y))
                 ship["size"] = ship["size"]-1
                 if ship["size"] <= 0:
                     print (ship["ship"] + " afundou!")
+                    self.remove_positions_sinked_ship(ship)
                     self.ships.remove(ship)
 
     def is_valid_to_put(self, x, y, msg):
@@ -120,13 +136,15 @@ class Board(object):
             return False
 
     def calculate_distance(self, x, y):
-	distances = []
-	for i in range(len(self.positions)):
-	    aux = (x - position[i]["x"])**2 + (y - position[i]["y"])**2
-	    dist = math.sqrt(aux)
-	    distances.append(dist)
-	distances.sort()
-	return distances[0]
+        if len(self.hit_positions) == 0:
+            return 0
+        distances = []
+        for i in range(len(self.hit_positions)):
+            aux = (x - self.hit_positions[i]["x"])**2 + (y - self.hit_positions[i]["y"])**2
+            dist = math.sqrt(aux)
+            distances.append(dist)
+        distances.sort()
+        return distances[0]
 
     def check_game_over(self):
         return len(self.ships) == 0
