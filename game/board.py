@@ -84,18 +84,13 @@ class Board(object):
             return -1
 
     def remove_positions_sinked_ship(self, ship):
-        print("positions: " , self.hit_positions)
-        print("removing .. ")
         positions = []
         for i in range(len(self.hit_positions)):
             if (self.hit_positions[i]["x"], self.hit_positions[i]["y"]) in ship['position']:
-                print("entrei pra deletar!")
                 positions.append(i)
         
-        print(positions)
         for i in sorted(positions, reverse=True):
             del(self.hit_positions[i])
-        print("positions: ", self.hit_positions)
 
     def hit_ship_at_position(self, x, y):
         for ship in self.ships:
