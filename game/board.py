@@ -67,6 +67,7 @@ class Board(object):
             return True
 
     def try_hit(self, x, y, msg):
+        print('Tentativa na posição: ('+str(x)+', '+str(y)+')')
         if self.is_valid_to_shoot(x, y, msg):
             if self.board[x][y] == 0:
                 print ('Tiro na água!')
@@ -101,6 +102,8 @@ class Board(object):
 
     def is_valid_to_shoot(self, x, y, msg):
         """ Confere se a coordenada pode receber tiro """
+        if not self.check_coordinate(x, y, msg): return False
+
         if (self.board[x][y] == 0 or self.board[x][y] == 1):
             return True
         else:
