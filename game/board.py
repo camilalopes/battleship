@@ -94,7 +94,7 @@ class Board(object):
         
         print(positions)
         for i in sorted(positions, reverse=True):
-            del(self.hit_positions[positions[i]])
+            del(self.hit_positions[i])
         print("positions: ", self.hit_positions)
 
     def hit_ship_at_position(self, x, y):
