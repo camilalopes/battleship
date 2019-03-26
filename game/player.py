@@ -74,63 +74,7 @@ class Computer(Player):
                 if valid:
                     valid = board.put_ship(ship, x, y, direction, False)
 
-
 class PC1(Computer):
-    directions = [
-        {"x": 0, "y": 1},
-        {"x": 0, "y": -1},
-        {"x": 1, "y": 0},
-        {"x": -1, "y": 0}]
-
-    def __init__(self, name):
-        super().__init__(name)
-        self.last_try = {"x": 0, "y": 0}
-        self.last_direction = {"x": 0, "y": 1}
-        self.hit_last_2 = [0, 0]
-        self.last_feedback = 0
-
-    def try_hit(self, board):
-        valid = False
-
-        while(valid == False):
-            x = 0
-            y = 0
-
-            #Se o último tiro acertou um navio
-            if self.hit_last_2[1] == 3:
-                for _ in range(6):
-                    x = self.last_try["x"] + self.last_direction["x"]
-                    y = self.last_try["y"] + self.last_direction["y"]
-                    if (board.is_valid_to_shoot(x, y, False)):
-                        break
-
-            #Se o último tiro acertou a água e o penúltimo acertou um navio
-            elif self.hit_last_2[0] == 3 and self.hit_last_2[1] == 2:
-                for _ in range(6):
-                    x = self.last_try["x"] - self.last_direction["x"]
-                    y = self.last_try["y"] - self.last_direction["y"]
-                    if (board.is_valid_to_shoot(x, y, False)):
-                        break
-
-            #Nenhuma jogada válida foi encontrada
-            if board.is_valid_to_shoot(x, y, False) == False:
-                x = rd.randint(0, board.get_rows())
-                y = rd.randint(0, board.get_cols())
-
-            valid = board.check_coordinate(x, y, False)
-            if valid:
-                self.last_feedback = board.try_hit(x, y, False)
-                valid = self.last_feedback != -1
-                if valid:
-                    self.hit_last_2[0] = self.hit_last_2[1]
-                    self.hit_last_2[1] = self.last_feedback
-                    self.last_try["x"] = x
-                    self.last_try["y"] = y
-
-    def put_ships(self, board):
-        super().put_ships(board)
-
-class PC2(Computer):
     directions = [
         {"x": 0, "y": 1},
         {"x": 0, "y": -1},

@@ -1,7 +1,7 @@
 import time
 import os
 
-from player import Human, PC1, PC2
+from player import Human, PC1
 from board import Board
 
 class Game(object):
@@ -11,7 +11,7 @@ class Game(object):
 
 	def __init__(self):
 		self.players.append(PC1("PC1"))
-		self.players.append(PC2("PC2"))
+		self.players.append(PC1("PC2"))
 
 		self.boards.append(Board())
 		self.boards.append(Board())
