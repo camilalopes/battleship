@@ -1,5 +1,7 @@
+# -*- coding: utf-8 -*-
 import random as rd
 import os
+
 from abc import ABC, abstractmethod
 
 from board import Board
@@ -29,12 +31,14 @@ class Human(Player):
     def try_hit(self, board):
         valid = False
         while(valid == False):
-            x = int(input('Coordenada X: '))
-            y = int(input('Coordenada Y: '))
-
-            valid = board.check_coordinate(x, y, True)
-            if valid:
-                valid = board.try_hit(x, y, True) != -1
+            try:
+                x = int(input('Coordenada X: '))
+                y = int(input('Coordenada Y: '))
+                valid = board.check_coordinate(x, y, True)
+                if valid:
+                    valid = board.try_hit(x, y, True)
+            except ValueError:
+                print('Coordenada inválida')
 
     def put_ships(self, board):
         for ship in board.get_ships():
@@ -166,6 +170,31 @@ class PC1(Computer):
             if board[x, y] == 0:
                 return True
         return False
+      
+class PC2(Computer):
+
+    def __init__(self, name):
+        super().__init__(name)
+
+    def try_hit(self, board):
+        valid = False
+        while(valid == False):
+            fit = 100000
+            best_position = {}
+            for _ in range(30):
+                x = rd.randint(0, board.get_rows()-1)
+                y = rd.randint(0, board.get_cols()-1)
+                position_fit = (board.calculate_distance(x, y))
+                if position_fit < fit:
+                    best_position = {"x": x, "y": y}
+                    fit = position_fit
+            valid = board.check_coordinate(best_position["x"], best_position["y"], False)
+            if valid:
+                valid = (board.try_hit(best_position["x"], best_position["y"], False))!=-1
+
+    def put_ships(self, board):
+        super().put_ships(board)
+
 
 #Helper
 def clear_screen():
