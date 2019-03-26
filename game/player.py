@@ -6,6 +6,7 @@ from abc import ABC, abstractmethod
 
 from board import Board
 
+
 class Player(ABC):
     name = ""
 
@@ -30,7 +31,7 @@ class Human(Player):
 
     def try_hit(self, board):
         valid = False
-        while(valid == False):
+        while(valid is False):
             try:
                 x = int(input('Coordenada X: '))
                 y = int(input('Coordenada Y: '))
@@ -43,7 +44,7 @@ class Human(Player):
     def put_ships(self, board):
         for ship in board.get_ships():
             valid = False
-            while(valid == False):
+            while(valid is False):
                 print('Posicione o seu ', ship['ship'])
                 x = int(input('Coordenada inicial X: '))
                 y = int(input('Coordenada inicial Y: '))
@@ -69,7 +70,7 @@ class Computer(Player):
     def put_ships(self, board):
         for ship in board.get_ships():
             valid = False
-            while(valid == False):
+            while(valid is False):
                 x = rd.randint(0, board.get_rows())
                 y = rd.randint(0, board.get_cols())
                 direction = 'v' if rd.randint(0, 2) == 0 else 'h'
@@ -77,6 +78,7 @@ class Computer(Player):
                 valid = board.check_coordinate(x, y, False)
                 if valid:
                     valid = board.put_ship(ship, x, y, direction, False)
+
 
 class PC1(Computer):
     directions = [
@@ -102,11 +104,13 @@ class PC1(Computer):
             y = self.last_try["y"]
 
             x2, y2 = self.look_for_pattern(x, y, board2)
-            if self.try_(x2, y2, board): return True
+            if self.try_(x2, y2, board): 
+                return True
 
             x2 = rd.randint(0, board.get_rows()-1)
             y2 = rd.randint(0, board.get_cols()-1)
-            if self.try_(x2, y2, board): return True
+            if self.try_(x2, y2, board): 
+                return True
 
     def put_ships(self, board):
         super().put_ships(board)
@@ -171,6 +175,7 @@ class PC1(Computer):
                 return True
         return False
       
+
 class PC2(Computer):
 
     def __init__(self, name):
@@ -178,25 +183,29 @@ class PC2(Computer):
 
     def try_hit(self, board):
         valid = False
-        while(valid == False):
+        while(valid is False):
             fit = 100000
             best_position = {}
-            for _ in range(30):
+            for _ in range(50):
                 x = rd.randint(0, board.get_rows()-1)
                 y = rd.randint(0, board.get_cols()-1)
                 position_fit = (board.calculate_distance(x, y))
                 if position_fit < fit:
                     best_position = {"x": x, "y": y}
                     fit = position_fit
-            valid = board.check_coordinate(best_position["x"], best_position["y"], False)
+            valid = board.check_coordinate(best_position["x"],
+                                           best_position["y"],
+                                           False)
             if valid:
-                valid = (board.try_hit(best_position["x"], best_position["y"], False))!=-1
+                valid = (board.try_hit(best_position["x"],
+                                       best_position["y"],
+                                       False)) != -1
 
     def put_ships(self, board):
         super().put_ships(board)
 
 
-#Helper
+# Helper
 def clear_screen():
     if os.name != "posix":
         os.system("cls")

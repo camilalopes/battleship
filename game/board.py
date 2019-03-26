@@ -4,32 +4,34 @@ import os
 import math
 import copy
 
+
 class Board(object):
     __row = 10
     __col = 10
 
     colors = {
-    "reset":"\033[00m",
-    "red":"\033[91m", #Sinked Ship
-    "green":"\033[92m", #Ship
-    "blue":"\033[94m", #Water Shot
-    "cyan":"\033[96m" #Instructions
+        "reset": "\033[00m",
+        "red": "\033[91m",  # Sinked Ship
+        "green": "\033[92m",  # Ship
+        "blue": "\033[94m",  # Water Shot
+        "cyan": "\033[96m"  # Instructions
     }
 
     def __init__(self):
         self.ships = [
-        {"ship" : "Aircraft", "size" : 5, "position": []},
-        {"ship" : "Battleship", "size" : 4, "position": []},
-        {"ship" : "Cruiser", "size" : 3, "position": []},
-        {"ship" : "Destroyer", "size" : 2, "position": []},
-        {"ship" : "Destroyer", "size" : 2, "position": []},
-        {"ship" : "Submarine", "size" : 1, "position": []},
-        {"ship" : "Submarine", "size" : 1, "position": []}]
-        self.hit_positions = []  # hit positions of ships that not yet been sunk
-        self.board = np.zeros((self.__row,self.__col), dtype=np.int)
+            {"ship": "Aircraft", "size": 5, "position": []},
+            {"ship": "Battleship", "size": 4, "position": []},
+            {"ship": "Cruiser", "size": 3, "position": []},
+            {"ship": "Destroyer", "size": 2, "position": []},
+            {"ship": "Destroyer", "size": 2, "position": []},
+            {"ship": "Submarine", "size": 1, "position": []},
+            {"ship": "Submarine", "size": 1, "position": []}]
+        self.hit_positions = []  # positions of ships that not yet been sunk
+        self.board = np.zeros((self.__row, self.__col), dtype=np.int)
 
     def get_rows(self):
         return int(self.__row)
+
     def get_cols(self):
         return int(self.__col)
 
@@ -88,17 +90,17 @@ class Board(object):
     def remove_positions_sinked_ship(self, ship):
         positions = []
         for i in range(len(self.hit_positions)):
-            if (self.hit_positions[i]["x"], self.hit_positions[i]["y"]) in ship['position']:
+            if (self.hit_positions[i]["x"],
+                    self.hit_positions[i]["y"]) in ship['position']:
                 positions.append(i)
-        
+
         for i in sorted(positions, reverse=True):
             del(self.hit_positions[i])
 
     def hit_ship_at_position(self, x, y):
         for ship in self.ships:
             if (x, y) in ship["position"]:
-                self.hit_positions.append({"x" : x, "y" : y})
-                #ship["position"].remove((x, y))
+                self.hit_positions.append({"x": x, "y": y})
                 ship["size"] = ship["size"]-1
                 if ship["size"] <= 0:
                     print (ship["ship"] + " afundou!")
@@ -112,11 +114,12 @@ class Board(object):
                 print ('Posição Inválida!')
             return False
         else:
-             return True
+            return True
 
     def is_valid_to_shoot(self, x, y, msg):
         """ Confere se a coordenada pode receber tiro """
-        if not self.check_coordinate(x, y, msg): return False
+        if not self.check_coordinate(x, y, msg):
+            return False
 
         if (self.board[x][y] == 0 or self.board[x][y] == 1):
             return True
@@ -127,7 +130,7 @@ class Board(object):
 
     def check_coordinate(self, x, y, msg):
         """ Confere a validade da coordenada """
-        if (x >= 0 and x < self.__row) and (y >= 0 and y < self.__col): #coordenada dentro do tabuleiro
+        if (x >= 0 and x < self.__row) and (y >= 0 and y < self.__col):
             return True
         else:
             if msg:
@@ -139,7 +142,8 @@ class Board(object):
             return 0
         distances = []
         for i in range(len(self.hit_positions)):
-            aux = (x - self.hit_positions[i]["x"])**2 + (y - self.hit_positions[i]["y"])**2
+            aux = (x - self.hit_positions[i]["x"])**2
+            + (y - self.hit_positions[i]["y"])**2
             dist = math.sqrt(aux)
             distances.append(dist)
         distances.sort()
@@ -149,14 +153,14 @@ class Board(object):
         return len(self.ships) == 0
 
     def display_board(self):
-        print(end="\t")
+        print(end='\t')
         for i in range(10):
-            print(i," ", end='')
+            print(i, " ", end='')
         print("\n")
 
         for row in range(self.get_rows()):
             for col in range(self.get_cols()):
-                if col==0:
+                if col == 0:
                     print(row, end='\t')
                 if self.board[row][col] == 0:
                     print(".", " ", end='')
@@ -179,12 +183,12 @@ class Board(object):
     def display_enemy_board(self):
         print(end="\t")
         for i in range(10):
-            print(i," ", end='')
+            print(i, " ", end='')
         print("\n")
 
         for row in range(self.get_rows()):
             for col in range(self.get_cols()):
-                if col==0:
+                if col == 0:
                     print(row, end='\t')
                 if self.board[row][col] == 0:
                     print(".", " ", end='')
